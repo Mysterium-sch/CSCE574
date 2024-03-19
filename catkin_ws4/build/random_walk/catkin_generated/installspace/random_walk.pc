@@ -1,0 +1,8 @@
+prefix=/home/lixion/Desktop/school/CSCE574/catkin_ws4/install
+
+Name: random_walk
+Description: Description of random_walk
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

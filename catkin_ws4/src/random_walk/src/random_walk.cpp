@@ -12,11 +12,13 @@
 #include "sensor_msgs/LaserScan.h"
 
 class RandomWalk {
+
  public:
+
   // Construst a new RandomWalk object and hook up this ROS node
   // to the simulated robot's velocity control and laser topics
-  RandomWalk(ros::NodeHandle& nh)
-      : fsm(FSM_MOVE_FORWARD),
+  RandomWalk(ros::NodeHandle& nh, double d, double a, double lt, double rt)
+      : distance(d), angle(a), line_time(lt), rot_time(rt),
         rotateStartTime(ros::Time::now()),
         rotateDuration(0.f) {
     // Initialize random time generator
@@ -27,9 +29,6 @@ class RandomWalk {
     // are in the queue to be sent, only the last command will be sent)
     commandPub = nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 
-    // Subscribe to the simulated robot's laser scan topic and tell ROS to call
-    // this->commandCallback() whenever a new message is published on that topic
-    laserSub = nh.subscribe("base_scan", 1, &RandomWalk::commandCallback, this);
   };
 
   // Send a velocity command
@@ -42,10 +41,10 @@ class RandomWalk {
   };
 
   void translate(double d) {
-    double t = lin_time;
+    double t = line_time;
 
     move(1, 0);
-    rospy.sleep(t);
+    ros::Duration(t).sleep(); 
     move(0,0);
   };
 
@@ -54,7 +53,7 @@ class RandomWalk {
     double t = rot_time;
 
     move(0, 0.5);
-    rospy.sleep(t);
+    ros::Duration(t).sleep(); 
     move(0,0);
   };
 
@@ -62,30 +61,19 @@ class RandomWalk {
   // processed in a timely manner, and also for sending
   // velocity controls to the simulated robot based on the FSM state
   void spin() {
-    rate = rospy.Rate(10);
+    ros::Rate rate(30);
     translate(distance);
-    rospy.sleep(30); // sleep for 30 seconds
+    ros::Duration(30.0).sleep(); 
     rotate_rel(angle);
   };
 
-  enum FSM { FSM_MOVE_FORWARD, FSM_ROTATE, FSM_STUCK };
-
-  // Tunable parameters
-  // TODO: tune parameters as you see fit
-  constexpr static double MIN_SCAN_ANGLE_RAD = -10.0 / 180 * M_PI;
-  constexpr static double MAX_SCAN_ANGLE_RAD = +10.0 / 180 * M_PI;
-  constexpr static float PROXIMITY_RANGE_M =
-      1.0;  // Should be smaller than  sensor_msgs::LaserScan::range_max
-  constexpr static double FORWARD_SPEED_MPS = 1.0;
-  constexpr static double BACKWARD_SPEED_MPS = -0.5;
-  constexpr static double ROTATE_SPEED_RADPS = M_PI / 2;
-
  protected:
+   double distance = 0;
+  double angle = 0;
+  double line_time = 0;
+  double rot_time = 0;
   ros::Publisher
       commandPub;  // Publisher to the simulated robot's velocity command topic
-  ros::Subscriber
-      laserSub;  // Subscriber to the simulated robot's laser scan topic
-  enum FSM fsm;  // Finite state machine for the random walk algorithm
   ros::Time rotateStartTime;     // Start time of the rotation
   ros::Duration rotateDuration;  // Duration of the rotation
   // Added for detecting stuck state:
@@ -97,11 +85,10 @@ class RandomWalk {
 };
 
 int main(int argc, char** argv) {
-  double distance = 0;
+    double distance = 0;
   double angle = 0;
   double line_time = 0;
   double rot_time = 0;
-
   bool printUsage=false;
   if(argc <= 4) {
     printUsage = true;
@@ -109,9 +96,9 @@ int main(int argc, char** argv) {
     try {
     distance = boost::lexical_cast<double>(argv[1]);
     angle = boost::lexical_cast<double>(argv[2]);
-    lin_time = boost::lexical_cast<double>(argv[3]);
+    line_time = boost::lexical_cast<double>(argv[3]);
     rot_time = boost::lexical_cast<double>(argv[4]);
-    } catch (std::exection err) {
+    } catch (std::exception err) {
       printUsage = true;
     }
   }
@@ -122,7 +109,7 @@ int main(int argc, char** argv) {
   ros::init(argc, argv,
             "random_walk");  // Initiate new ROS node named "random_walk"
   ros::NodeHandle n;
-  RandomWalk walker(n);  // Create new random walk object
+  RandomWalk walker(n, distance, angle, line_time, rot_time);  // Create new random walk object
   walker.spin();         // Execute FSM loop
   return 0;
 };
