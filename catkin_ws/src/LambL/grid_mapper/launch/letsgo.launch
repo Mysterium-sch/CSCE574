@@ -1,0 +1,27 @@
+<launch>
+
+    <node
+        pkg="stage_ros"
+        type="stageros"
+        name="stage"
+        args="$(find grid_mapper)/world/cave_single.world"
+    />
+
+    <node
+        pkg="grid_mapper"
+        type="grid_mapper"
+        name="grid"
+        args="200 200"
+    />
+
+    <node
+        pkg="random_walk"
+        type="random_walk"
+        name="walker"
+    />
+
+    
+
+
+
+</launch>

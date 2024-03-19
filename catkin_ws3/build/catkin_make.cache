@@ -1,0 +1,2 @@
+beginner_tutorials:potential_field:random_walk
+-DCATKIN_DEVEL_PREFIX=/home/lixion/Desktop/school/catkin_ws3/devel -DCMAKE_INSTALL_PREFIX=/home/lixion/Desktop/school/catkin_ws3/install -G Unix Makefiles

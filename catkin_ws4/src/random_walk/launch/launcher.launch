@@ -1,0 +1,11 @@
+<launch>
+
+        <node
+        pkg="random_walk"
+        type="random_walk"
+        name="walker"
+        args="1 10"
+    />
+    
+
+</launch>

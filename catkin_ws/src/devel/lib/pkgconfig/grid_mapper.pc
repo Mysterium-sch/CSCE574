@@ -1,0 +1,8 @@
+prefix=/home/lily/Desktop/work/catki_ws/catkin_ws/src/devel
+
+Name: grid_mapper
+Description: Description of grid_mapper
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: message_runtime roscpp rospy std_msgs tf geometry_msgs nav_msgs visualization_msgs sensor_msgs

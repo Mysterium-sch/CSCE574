@@ -1,0 +1,2 @@
+LambL/grid_mapper:LambL/random_walk
+-DCATKIN_DEVEL_PREFIX=/home/lixion/Desktop/work/catki_ws/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/lixion/Desktop/work/catki_ws/catkin_ws/install -G Unix Makefiles
