@@ -52,7 +52,8 @@ class RandomWalk {
   };
 
 
-  void rotate_rel(double angle) {
+  void rotate_rel_pos(double angle) {
+    angle /=90;
     double t = rot_time;
     t *= angle;
     ros::Time rotateStartTime = ros::Time::now();
@@ -63,14 +64,30 @@ class RandomWalk {
     move(0,0);
   };
 
+    void rotate_rel_neg(double angle) {
+    angle /=90;
+    double t = rot_time;
+    t *= angle;
+    ros::Time rotateStartTime = ros::Time::now();
+    ros::Duration rotateDuration = ros::Duration(t);
+    while (ros::Time::now() < (rotateStartTime+rotateDuration)) {
+				 move(0, -M_PI/4);
+		}
+    move(0,0);
+  };
+
   // Main FSM loop for ensuring that ROS messages are
   // processed in a timely manner, and also for sending
   // velocity controls to the simulated robot based on the FSM state
   void spin() {
     ros::Rate rate(30);
     translate(distance);
-    ros::Duration(30.0).sleep(); 
-    rotate_rel(angle);
+    ros::Duration(10.0).sleep(); 
+    if(angle < 0) {
+      rotate_rel_neg(angle);
+    } else {
+      rotate_rel_pos(angle);
+    }
   };
 
  protected:
@@ -93,17 +110,15 @@ class RandomWalk {
 int main(int argc, char** argv) {
     double distance = 0;
   double angle = 0;
-  double line_time = 0;
-  double rot_time = 0;
+  double line_time = 2;
+  double rot_time = 3.45;
   bool printUsage=false;
-  if(argc <= 4) {
+  if(argc <= 2) {
     printUsage = true;
   } else {
     try {
     distance = boost::lexical_cast<double>(argv[1]);
     angle = boost::lexical_cast<double>(argv[2]);
-    line_time = boost::lexical_cast<double>(argv[3]);
-    rot_time = boost::lexical_cast<double>(argv[4]);
     } catch (std::exception err) {
       printUsage = true;
     }
