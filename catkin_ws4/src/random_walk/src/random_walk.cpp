@@ -43,17 +43,23 @@ class RandomWalk {
   void translate(double d) {
     double t = line_time;
     t *= d;
-    move(1, 0);
-    ros::Duration(t).sleep(); 
+    ros::Time rotateStartTime = ros::Time::now();
+    ros::Duration rotateDuration = ros::Duration(t);
+    while (ros::Time::now() < (rotateStartTime+rotateDuration)) {
+				 move(1, 0);
+		}
     move(0,0);
   };
 
 
   void rotate_rel(double angle) {
     double t = rot_time;
-    t *= d;
-    move(0, M_PI / 4);
-    ros::Duration(t).sleep(); 
+    t *= angle;
+    ros::Time rotateStartTime = ros::Time::now();
+    ros::Duration rotateDuration = ros::Duration(t);
+    while (ros::Time::now() < (rotateStartTime+rotateDuration)) {
+				 move(0, M_PI/4);
+		}
     move(0,0);
   };
 
