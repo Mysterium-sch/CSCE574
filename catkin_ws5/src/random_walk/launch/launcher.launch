@@ -1,0 +1,17 @@
+<launch>
+
+    <node
+        pkg="stage_ros"
+        type="stageros"
+        name="stage"
+        args="$(find random_walk)/worlds/cave_single.world"
+    />
+    
+        <node
+        pkg="random_walk"
+        type="random_walk"
+        name="walk"
+    />
+    
+
+</launch>
