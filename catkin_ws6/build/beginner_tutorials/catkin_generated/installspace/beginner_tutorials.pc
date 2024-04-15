@@ -1,0 +1,8 @@
+prefix=/home/lixion/Desktop/school/CSCE574/catkin_ws6/install
+
+Name: beginner_tutorials
+Description: Description of beginner_tutorials
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

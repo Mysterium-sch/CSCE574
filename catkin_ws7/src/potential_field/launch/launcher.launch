@@ -1,0 +1,18 @@
+<launch>
+
+    <node
+        pkg="stage_ros"
+        type="stageros"
+        name="stage"
+        args="$(find potential_field)/worlds/cave_single.world"
+    />
+    
+        <node
+        pkg="potential_field"
+        type="potential_field"
+        name="fields"
+        args="8 1 0 100"
+    />
+    
+
+</launch>

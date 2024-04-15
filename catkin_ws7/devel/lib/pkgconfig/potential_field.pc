@@ -1,0 +1,8 @@
+prefix=/home/lixion/Desktop/school/CSCE574/catkin_ws7/devel
+
+Name: potential_field
+Description: Description of potential_field
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
