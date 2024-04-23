@@ -1,0 +1,2 @@
+part
+-DCATKIN_DEVEL_PREFIX=/home/lixion/Desktop/school/CSCE574/part/devel -DCMAKE_INSTALL_PREFIX=/home/lixion/Desktop/school/CSCE574/part/install -G Unix Makefiles

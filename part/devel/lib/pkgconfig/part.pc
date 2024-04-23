@@ -1,0 +1,8 @@
+prefix=/home/lixion/Desktop/school/CSCE574/part/devel
+
+Name: part
+Description: Description of part
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
